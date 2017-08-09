@@ -30,11 +30,17 @@ Some people think JavaScript is not a true object-oriented language. In "classic
 
 #### JavaScript uses a different system — "inheriting" objects do not have functionality copied over to them, instead the functionality they inherit is linked to via the prototype chain (often referred to as prototypal inheritance).
 
+When you try to access a property on the new object `George`, it checks the object’s own properties first. If it doesn’t find any there, it checks the `[[Prototype]]`, and so on up the prototype chain until it gets back to `Object.prototype`, which is the root delegate for most objects.
+
+![prototype chain](https://user-images.githubusercontent.com/28062032/29120598-05bd1dc2-7cd9-11e7-8e09-a3ccf193a030.png)
+_From [www.medium.com](https://medium.com/javascript-scene/3-different-kinds-of-prototypal-inheritance-es6-edition-32d777fa16c9)_
+
+
 ### Benefits 
-- It's simple.
-- It's powerful.
+- It's simple and powerful.
 - It leads to smaller, less redundant code.
 - It's dynamic and hence it's better for dynamic languages.
+- Method delegation can preserve memory resources because you only need one copy of each method to be shared by all instances.
 
 ### Three different kinds of prototypal inheritance offers lots of flexibility:
 
@@ -67,6 +73,7 @@ In JavaScript, all functions are also objects, which means that they can have pr
 ```
 function foo() {
 }
+
 typeof foo.prototype // ‘object’
 ```
 Any time you create a function, it will automatically have a property called prototype, which will be initialized to an empty object.
@@ -91,35 +98,39 @@ var fido = new Dog();
 ```
 function Dog() {
 }
+
 Dog.prototype.bark = function() {
  console.log(‘woof!’);
 };
 ```
 
-All functions automatically get initialized with a prototype object. In the example above, we tacked a function onto it called bark.
+All functions automatically get initialized with a prototype object. In the example above, we tacked a function onto it called `bark`.
 
 ```
 function Dog() {
 }
+
 Dog.prototype.bark = function() {
  console.log(‘woof!’);
 };
+
 var fido = new Dog();
+
 fido.bark(); // ‘woof!’
 ```
 
-By placing bark on Dog.prototype, we made it available to all instances of Dog.
+By placing `bark` on `Dog.prototype`, we made it available to all instances of `Dog`.
 
 ### Differential Inheritance
 
 Methods aren’t copied from parent to child. Instead, children have an “invisible link” back to their parent object.
 
-For example, fido doesn’t actually have its own method called bark() (in other words, fido.hasOwnProperty(‘bark’) === false).
+For example, `fido` doesn’t actually have its own method called `bark()` (in other words, `fido.hasOwnProperty(‘bark’) === false`).
 
-What actually happens when I write fido.bark() is this:
-1. The JS engine looks for a property called bark on our fido object.
-2. It doesn’t find one, so it looks “up the prototype chain” to fido’s parent, which is Dog.prototype.
-3. It finds Dog.prototype.bark, and calls it with this bound to fido.
+What actually happens when I write `fido.bark()` is this:
+1. The JS engine looks for a property called `bark` on our `fido` object.
+2. It doesn’t find one, so it looks “up the prototype chain” to fido’s parent, which is `Dog.prototype`.
+3. It finds `Dog.prototype.bark`, and calls it with this bound to `fido`.
 
 <details>
 
@@ -139,6 +150,7 @@ var parent = {
  console.log(‘bar’);
  }
 };
+
 var child = Object.create( parent );
 
 child.hasOwnProperty(‘foo’); // false
