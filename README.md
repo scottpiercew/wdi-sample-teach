@@ -28,11 +28,15 @@ Some people think JavaScript is not a true object-oriented language. In "classic
 
 </details>
 
-JavaScript uses a different system — "inheriting" objects do not have functionality copied over to them, instead the functionality they inherit is linked to via the prototype chain (often referred to as prototypal inheritance).
+#### JavaScript uses a different system — "inheriting" objects do not have functionality copied over to them, instead the functionality they inherit is linked to via the prototype chain (often referred to as prototypal inheritance).
 
-How do we create an object in JavaScript that inherits from another object?
+### Benefits 
+- It's simple.
+- It's powerful.
+- It leads to smaller, less redundant code.
+- It's dynamic and hence it's better for dynamic languages.
 
-We can use the different kinds of prototypal inheritance:
+### Three different kinds of prototypal inheritance offers lots of flexibility:
 
 <details>
 
@@ -52,11 +56,11 @@ We can use the different kinds of prototypal inheritance:
 
   <summary><strong>Functional Inheritance</strong> *(Not to be confused with functional programming)*</summary>
 
-  > * Coined by Douglas Crockford in “JavaScript: The Good Parts”. Functional inheritance makes use of a factory function, and then tacks on new properties using concatenative inheritance.
+  > * Functional inheritance makes use of a factory function, and then tacks on new properties using concatenative inheritance.
 
 </details>
 
-## Prototypal Inheritance Demo (10 mins)
+## Prototypal Inheritance Demo (5 mins)
 
 ### Function prototypes
 In JavaScript, all functions are also objects, which means that they can have properties. And as it so happens, they all have a property called `prototype`, which is also an object.
@@ -123,6 +127,83 @@ What actually happens when I write fido.bark() is this:
 
   > * There’s really no such property as fido.bark. It doesn’t exist. Instead, fido has access to the bark() method on Dog.prototype because it’s an instance of Dog. This is the “invisible link” I mentioned. More commonly, it’s referred to as the “prototype chain”.
 </details>
+
+
+#### How do we create an object in JavaScript that inherits from another object?
+
+### Object.create()
+
+```
+var parent = {
+ foo: function() {
+ console.log(‘bar’);
+ }
+};
+var child = Object.create( parent );
+
+child.hasOwnProperty(‘foo’); // false
+child.foo(); // ‘bar’
+```
+
+We created a new, empty object that has parent in its prototype chain. That means that even though child doesn’t have its own foo() method, it has access to the foo() method from parent.
+
+## Putting It All Together Code Along (5 mins)
+
+Create a Rectangle constructor.
+```
+function Rectangle( width, height ) {
+ this.width = width;
+ this.height = height;
+}
+```
+
+When a function is used as a constructor, this refers to the new object that you’re creating. So in our Rectangle constructor, we’re taking width and height as arguments, and assigning those values to the width and height properties of our new Rectangle instance.
+
+```
+var rect = new Rectangle( 3, 4 );
+
+rect.width; // 3
+rect.height; // 4
+```
+
+Create a method for our Rectangle called area.
+
+```
+Rectangle.prototype.area = function() {
+ return this.width * this.height;
+};
+```
+
+```
+var rect = new Rectangle( 3, 4 );
+
+rect.area(); // 12
+```
+
+### Subclassing
+
+What if we want to make a new class of object that inherits from Rectangle? Let’s say we need a class called Square.
+
+```
+function Square( length ) {
+ this.width = this.height = length;
+}
+```
+
+How do we make Square inherit from Rectangle? It’s all about setting up the prototype chain.
+We can use Object.create() to create an empty object that inherits from another object. In the case of Square, that means all we need to do is this:
+
+```
+Square.prototype = Object.create( Rectangle.prototype );
+```
+
+All instances of Square will automatically have Square.prototype in their prototype chain, and because Square.prototype has Rectangle.prototype in its prototype chain, every Square will have access to the methods of Rectangle.
+
+```
+var square = new Square( 4 );
+
+square.area(); // 16
+```
 
 
 ## Conclusion (2 mins)
