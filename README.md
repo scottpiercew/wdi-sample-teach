@@ -18,17 +18,29 @@
 ## An Intro to Prototypes (5 mins)
 
 
-Some people think JavaScript is not a true object-oriented language. In "classic OO" languages, you tend to define class objects of some kind, and you can then simply define which classes inherit from which other classes. JavaScript uses a different system — "inheriting" objects do not have functionality copied over to them, instead the functionality they inherit is linked to via the prototype chain (often referred to as prototypal inheritance).
+Some people think JavaScript is not a true object-oriented language. In "classic OO" languages, you tend to define class objects of some kind, and you can then simply define which classes inherit from which other classes. 
+
+JavaScript uses a different system — "inheriting" objects do not have functionality copied over to them, instead the functionality they inherit is linked to via the prototype chain (often referred to as prototypal inheritance).
+
 
 <details>
 
-  <summary><strong>How do we create an object in JavaScript that inherits from another object?</strong></summary>
+  <summary><strong>Syntactical sugar...</strong></summary>
 
-  > * The Object.create() method creates a new object with the specified prototype object and properties.
+  > * The class keyword is introduced in ES2015, but is syntactical sugar, JavaScript remains prototype-based
 
 </details>
 
+
+How do we create an object in JavaScript that inherits from another object?
+
+The Object.create() method creates a new object with the specified prototype object and properties.
 ```
 Object.create(proto[, propertiesObject])
 ```
 
+## Conclusion (5 mins)
+
+- Demonstrate a use case that explains prototypal inheritance and what kind of flexibility it gives to programmers 
+- Use namespaces to organize application code 
+- Define a custom constructor method that sets one or more properties of a new object 
